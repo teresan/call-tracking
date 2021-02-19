@@ -28,7 +28,7 @@
         "type": "set-variables",
         "transitions": [
           {
-            "next": "ForwardToRestaurant",
+            "next": "ForwardCall",
             "event": "next"
           }
         ],
@@ -50,7 +50,7 @@
         }
       },
       {
-        "name": "ForwardToRestaurant",
+        "name": "ForwardCall",
         "type": "connect-call-to",
         "transitions": [
           {
@@ -92,7 +92,7 @@
           "method": "GET",
           "content_type": "application/x-www-form-urlencoded;charset=utf-8",
           "parameters": [],
-          "url": "https://www.google-analytics.com/collect?v=1&t=event&tid={{flow.variables.TrackingId}}&cid={{contact.channel.address}}&ec=call&ea={{widgets.ForwardToRestaurant.DialCallStatus}}&el={{flow.variables.Campaign}}&ev={{widgets.ForwardToRestaurant.DialCallDuration}}"
+          "url": "https://www.google-analytics.com/collect?v=1&t=event&tid={{flow.variables.TrackingId}}&cid={{contact.channel.address}}&ec=call&ea={{widgets.ForwardCall.DialCallStatus}}&el={{flow.variables.Campaign}}&ev={{widgets.ForwardCall.DialCallDuration}}"
         }
       },
       {
