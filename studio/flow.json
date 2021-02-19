@@ -1,0 +1,129 @@
+{
+    "description": "Call Tracking demo",
+    "states": [
+      {
+        "name": "Trigger",
+        "type": "trigger",
+        "transitions": [
+          {
+            "event": "incomingMessage"
+          },
+          {
+            "next": "CampaignInfo",
+            "event": "incomingCall"
+          },
+          {
+            "event": "incomingRequest"
+          }
+        ],
+        "properties": {
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      },
+      {
+        "name": "CampaignInfo",
+        "type": "set-variables",
+        "transitions": [
+          {
+            "next": "ForwardToRestaurant",
+            "event": "next"
+          }
+        ],
+        "properties": {
+          "variables": [
+            {
+              "value": "CampaignName",
+              "key": "Campaign"
+            },
+            {
+              "value": "UA-XXXXXXXXX-Y",
+              "key": "TrackingId"
+            }
+          ],
+          "offset": {
+            "x": 40,
+            "y": 290
+          }
+        }
+      },
+      {
+        "name": "ForwardToRestaurant",
+        "type": "connect-call-to",
+        "transitions": [
+          {
+            "next": "CreateEventTracking",
+            "event": "callCompleted"
+          },
+          {
+            "event": "hangup"
+          }
+        ],
+        "properties": {
+          "offset": {
+            "x": 20,
+            "y": 540
+          },
+          "caller_id": "{{contact.channel.address}}",
+          "noun": "number",
+          "to": "+15555555555",
+          "timeout": 30
+        }
+      },
+      {
+        "name": "CreateEventTracking",
+        "type": "make-http-request",
+        "transitions": [
+          {
+            "next": "SendFollowUp",
+            "event": "success"
+          },
+          {
+            "event": "failed"
+          }
+        ],
+        "properties": {
+          "offset": {
+            "x": 80,
+            "y": 800
+          },
+          "method": "GET",
+          "content_type": "application/x-www-form-urlencoded;charset=utf-8",
+          "parameters": [],
+          "url": "https://www.google-analytics.com/collect?v=1&t=event&tid={{flow.variables.TrackingId}}&cid={{contact.channel.address}}&ec=call&ea={{widgets.ForwardToRestaurant.DialCallStatus}}&el={{flow.variables.Campaign}}&ev={{widgets.ForwardToRestaurant.DialCallDuration}}"
+        }
+      },
+      {
+        "name": "SendFollowUp",
+        "type": "run-function",
+        "transitions": [
+          {
+            "event": "success"
+          },
+          {
+            "event": "fail"
+          }
+        ],
+        "properties": {
+          "service_sid": "default",
+          "offset": {
+            "x": -170,
+            "y": 1080
+          },
+          "parameters": [
+            {
+              "value": "{{contact.channel.address}}",
+              "key": "callerId"
+            }
+          ],
+          "url": "https://your-runtime-domain/followup"
+        }
+      }
+    ],
+    "initial_state": "Trigger",
+    "flags": {
+      "allow_concurrent_calls": true
+    }
+  }
