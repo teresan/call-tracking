@@ -8,7 +8,7 @@ Use of **Twilio** to track calls and send events to **Google Analytics** using M
 
 This function will simply send a follow up SMS after call tracking metrics are collected.
 
-* Create a Twilio Function and copy and paste the contents of [functions/index.js](functions/index.js) to the newly created function. Save and deploy your function. [https://www.twilio.com/docs/runtime/functions#getting-started-with-serverless-and-twilio-functions] (https://www.twilio.com/docs/runtime/functions#getting-started-with-serverless-and-twilio-functions)
+* Create a Twilio Function and copy and paste the contents of [functions/index.js](functions/index.js) to the newly created function. Save and deploy your function. [https://www.twilio.com/docs/runtime/functions](https://www.twilio.com/docs/runtime/functions)
 
 * Update the values of **body** and **from** in your function code.
 
